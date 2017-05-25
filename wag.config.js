@@ -16,5 +16,10 @@ module.exports = {
   // 入口文件
   "index": "pages/home/index.html",
   // 请求api
-  "proxyTable": {}
+  "proxyTable": {
+    '/v2': {
+      target: 'https://api.douban.com',
+      changeOrigin: true
+    }
+  }
 }
