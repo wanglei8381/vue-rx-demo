@@ -41,19 +41,22 @@
                      .pluck('newValue')
                      .startWith(this.tag)
 
-      let start$ = Rx.Observable.merge(this.plus$.map(() => 1), this.minus$.map(() => -1))
-                     .scan((a, b) => a + b)
-                     .filter(x => x >= 0)
+      let start$ = Rx.Observable.merge(this.plus$.mapTo(1), this.minus$.mapTo(-1))
+                     .scan((a, b) => {
+                       let s = a + b
+                       return s > 0 ? s : 0
+                     })
                      .startWith(0)
-
-      start$.subscribe((val) => {
-        console.log(val)
-      })
 
       return {
         movie: Rx.Observable.combineLatest(name$, tag$, start$)
                  .switchMap((val) => search(...val))
                  .pluck('data')
+                 .startWith({
+                   total: 0,
+                   start: -1,
+                   subjects: []
+                 })
       }
     }
   }
