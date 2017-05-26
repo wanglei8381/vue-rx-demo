@@ -42,10 +42,7 @@
                      .startWith(this.tag)
 
       let start$ = Rx.Observable.merge(this.plus$.mapTo(1), this.minus$.mapTo(-1))
-                     .scan((a, b) => {
-                       let s = a + b
-                       return s > 0 ? s : 0
-                     })
+                     .scan((a, b) => a + b)
                      .startWith(0)
 
       return {
